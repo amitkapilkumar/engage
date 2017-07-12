@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Enter Expense</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+	$(document).ready(function() {
+		$("#date").val("");
+		$("#value").val("");
+		$("#reason").val("");
+	    $("#date").datepicker();
+	    $("#value").focusout(function() {
+	    	$("#vatMsg").hide();
+	    	var value = $("#value").val().toLowerCase();
+	    	if(value.indexOf("eur") != -1) { 
+	    		convertEURToGBP();
+	    		return;
+	    	}
+	    });
+	    $("#value").keyup(function() {
+	    	var value = $("#value").val();
+	    	if($.isNumeric(value)){
+	    		var vat = "Vat is : ";
+	    		$("#vatMsg").html(vat + (value - ((value*100)/120)));
+	    		$("#vatMsg").show();
+	    	}
+	    });
+	    $("#save").click(function() {
+	    	if(isEmpty($("#date").val())) {
+	    		$("#dateMsg").show();
+				setTimeout(function() {
+					$("#dateMsg").fadeOut(3000);
+				}, 500);
+	    		return;
+	    	}
+	    	if(!$.isNumeric($("#value").val())) {
+	    		var value = $("#value").val().toLowerCase();
+	    		if(value.indexOf("eur") == -1) {
+		    		$("#valueMsg").show();
+					setTimeout(function() {
+						$("#valueMsg").fadeOut(3000);
+					}, 500);
+		    		return;
+	    		}
+	    	}	
+	    	var dataObject = {
+    			"date" : $("#date").val(),
+    			"value" : $("#value").val(),
+    			"reason" : $("#reason").val()
+	    	};
+	    	$.ajax({
+				url: './expense',
+				type: 'put',
+				data: JSON.stringify(dataObject),
+				contentType: 'application/json',
+				success: function() {
+					$("#success").show();
+					setTimeout(function() {
+						$("#success").fadeOut(3000);
+					}, 500);
+				},
+				failure: function() {
+					$("#failure").show();
+					setTimeout(function() {
+						$("#failure").fadeOut(3000);
+					}, 500);
+				}
+			});
+	    });
+	});
+	function isEmpty(value) {
+		return typeof value == 'string' && !value.trim() || typeof value == 'undefined' || value === null;
+	}
+	function convertEURToGBP() {
+		$.ajax({
+			url : 'http://free.currencyconverterapi.com/api/v3/convert?q=EUR_GBP&compact=y',
+			dataType: "jsonp",
+			async: false,
+			success : function(data) {
+				var value = $("#value").val().replace(/eur/gi, "");
+				$("#value").val(data.EUR_GBP.val * value);
+			},
+			failure: function() {
+				$("#failFetchConversionRate").show();
+				setTimeout(function() {
+					$("#failFetchConversionRate").fadeOut(3000);
+				}, 500);
+			}
+		});
+	}
+</script>
+</head>
+<body>
+	<div style="text-align: left; width: 100%">
+		<table align="center">
+			<tr>
+				<td>Date</td>
+				<td><input id="date"></td>
+			</tr>
+			<tr><td colspan="2"><p style="background-color: #f54a0f;display: none;" id="dateMsg">Date is expected</p></td></tr>
+			<tr>
+				<td>Value</td>
+				<td><input id="value"></td>
+			</tr>
+			<tr><td colspan="2"><p style="background-color: #f54a0f;display: none;" id="valueMsg">Numeric value is expected</p></td></tr>
+			<tr><td colspan="2"><p style="background-color: #8fdc11;display: none;" id="vatMsg"></p></td></tr>
+			<tr>
+				<td>Reason</td>
+				<td><textarea id="reason"></textarea></td>
+			</tr>
+			<tr><td colspan="2">&nbsp;</td></tr>
+			<tr>
+				<td colspan="2"><input type="button" id="save" value="Add expense"/></td>
+			</tr>
+			<tr>
+				<td colspan="2"><p><a href="./view.html" style="text-decoration: none">View expenses</a></p></td>
+			</tr>
+			<tr>
+				<td colspan="2"><p style="background-color: #8fdc11;display: none" id="success">Expense Added !!</p></td>
+			</tr>
+			<tr>
+				<td colspan="2"><p style="background-color: #f54a0f;display: none;" id="failure">Fail to Add expense</p></td>
+			</tr>
+			<tr>
+				<td colspan="2"><p style="background-color: #f54a0f;display: none;" id="failFetchConversionRate">Failed fetch EUR to GBP conversion rate</p></td>
+			</tr>
+		</table>
+	</div>	
+</body>
+</html>

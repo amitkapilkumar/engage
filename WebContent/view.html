@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>View Expenses</title>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script>
+	$(document).ready(function() {
+		$.ajax( {
+			url: './expenses',
+			success: function(data) {
+				var row;
+		        $.each(data, function (key, value) {	
+		          row = '<tr>';
+		          row += '<td>' + value.date + '</td>';
+		          row += '<td>' + value.value + '</td>';
+		          row += '<td>' + value.vat + '</td>';
+		          row += '<td>' + value.reason + '</td>';
+		          row += '</tr>';
+		          $(row).appendTo("tbody");
+				});
+			},	
+			failure: function() {
+				alert("failed to load data");
+			}
+		});
+	});
+</script>
+<style>
+   table, th , td {
+      border: 1px solid grey;
+      border-collapse: collapse;
+      padding: 5px;
+   }
+   
+   table tr:nth-child(odd) {
+      background-color: #f2f2f2;
+   }
+
+   table tr:nth-child(even) {
+      background-color: #ffffff;
+   }
+</style>
+</head>
+<body>
+<div style="text-align: left; width: 100%">
+	<table align="center">
+		<thead>
+			<tr>
+				<th>Date</th>
+				<th>Value</th>
+				<th>VAT</th>
+				<th>Reason</th>				
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	<br/>
+	<p style="text-align: center;"><a href="./expense.html" style="text-decoration: none;">Enter Expense</a></p>
+</div>
+</body>
+</html>
