@@ -12,6 +12,7 @@ Request Body:
 }
 
 2. GET /expenses
+
 Response Body:
 [
     {
