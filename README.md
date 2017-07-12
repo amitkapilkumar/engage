@@ -46,3 +46,9 @@ Which exposes rest end points
 	- Ex.: http://localhost:8080/engage/expense.html
 2. User can navigate to http://`machine-ip-or-name`:`port`/engage/view.html to view entered expense
 	- Ex.: http://localhost:8080/engage/view.html
+	
+## About backend technologies
+- Spring MVC, Hibernate, JPA, MySQL
+
+## About frontend technologies
+- CSS, JQuery, JQueryUI, HTML5, JavaScript
