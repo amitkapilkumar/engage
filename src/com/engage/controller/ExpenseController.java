@@ -21,7 +21,7 @@ public class ExpenseController {
 	@Autowired
 	private ExpenseService expenseService;
 	
-	@RequestMapping(value = "/expense", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/expense", method = RequestMethod.PUT, consumes = "application/json")
 	@ResponseBody
 	public void addExpense(@RequestBody ExpenseRequestObject erb) throws ParseException, ExpenseException {
 		expenseService.add(erb);
