@@ -42,7 +42,7 @@ Which exposes rest end points
 2. Other way to, import the project in eclipse and build and deploy integrated tomcat in eclipse/idea IntelliJ
 
 ## Viewing webpage
-1. User can navigate to http://<machine-ip-or-name>:<port>/engage/expense.html to enter expense
-	- http://localhost:8080/engage/expense.html
-2. User can navigate to http://<machine-ip-or-name>:<port>/engage/view.html to view entered expense
-	- http://localhost:8080/engage/view.html
+1. User can navigate to http://`machine-ip-or-name`:`port`/engage/expense.html to enter expense
+	- Ex.: http://localhost:8080/engage/expense.html
+2. User can navigate to http://`machine-ip-or-name`:`port`/engage/view.html to view entered expense
+	- Ex.: http://localhost:8080/engage/view.html
